@@ -1,0 +1,44 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (uvx/MCP servers)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+*.tgz
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+crash.log
+
+# CDK
+cdk.out/
+
+# SAM
+.aws-sam/
+
+# Plugin data
+*.log
+
+# Claude Code
+MEMORY/
+.claude/
+
+# Forked repos (local development only)
+claude-plugins-official/
+agent-plugins/
+
