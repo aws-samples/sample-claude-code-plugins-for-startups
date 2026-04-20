@@ -51,6 +51,53 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 - Set `minCapacity` >= 2 for production services (multi-AZ resilience).
 - Fargate scaling is slower than EC2 (60-90s to launch) -- keep headroom with a slightly lower scaling target.
 
+## Express Mode
+
+**ECS Express Mode** is the fastest path to a production-ready, load-balanced ECS service. It provisions a complete application stack — Fargate service, ALB with SSL/TLS, auto-scaling, security groups, and networking — from a single API call requiring only three parameters: a container image, task execution role, and infrastructure role. No additional charge beyond the underlying resources.
+
+**When to use Express Mode:**
+- Web applications and APIs — stateless HTTP services that need a public or private HTTPS endpoint
+- Rapid prototyping — deploy and test without infrastructure setup overhead
+- App Runner migration — AWS recommends Express Mode as the replacement for App Runner (closing to new customers April 30, 2026)
+- Platform teams — provide self-service deployment capabilities to app teams without deep AWS knowledge
+
+**Key defaults set by Express Mode** (all underlying resources remain accessible for direct management):
+- Fargate launch type with capacity provider strategy
+- Canary deployment strategy (not changeable after creation)
+- AZ rebalancing enabled
+- Health check grace period: 300s
+- CPU-based auto-scaling (customizable to request-based)
+- Public subnets → internet-facing ALB; private subnets → internal ALB
+- Auto-created service and load balancer security groups
+
+**Express Mode CLI commands:**
+```bash
+# Create an Express Mode service (minimal — 3 required params)
+aws ecs create-express-gateway-service \
+  --execution-role-arn arn:aws:iam::role/ecsTaskExecutionRole \
+  --infrastructure-role-arn arn:aws:iam::role/ecsInfrastructureRoleForExpressServices \
+  --primary-container 'image=nginx'
+
+# Create with custom scaling and env vars
+aws ecs create-express-gateway-service \
+  --execution-role-arn arn:aws:iam::role/ecsTaskExecutionRole \
+  --infrastructure-role-arn arn:aws:iam::role/ecsInfrastructureRoleForExpressServices \
+  --primary-container 'image=my-app:v1,port=8080' \
+  --scaling-target '{"minTaskCount": 2}' \
+  --service-name my-api
+
+# Monitor an Express Mode deployment (interactive)
+aws ecs monitor-express-gateway-service \
+  --service-arn arn:aws:ecs:us-east-1:123456789012:service/my-cluster/my-svc
+
+# Delete an Express Mode service
+aws ecs delete-express-gateway-service --service <service-name-or-arn>
+```
+
+**Express Mode vs standard ECS:** Use Express Mode when you want production-ready defaults with minimal configuration. Use standard ECS services when you need full control over deployment strategy, custom load balancer configurations, EC2 launch type, or non-HTTP workloads (queue workers, batch jobs).
+
+> **Reference:** [Amazon ECS Express Mode Overview](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html) | [Resources created by Express Mode](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-work.html)
+
 ## Deployment Strategies
 
 - **Rolling update** (default): Good for most workloads. Set `minimumHealthyPercent: 100` and `maximumPercent: 200` to deploy with zero downtime.
