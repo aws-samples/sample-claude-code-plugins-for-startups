@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Bump Version and Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/v}"
+          echo "version=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Releasing version: $TAG"
+
+      - name: Bump marketplace.json metadata version
+        run: |
+          jq --arg v "${{ steps.version.outputs.version }}" \
+            '.metadata.version = $v' \
+            .claude-plugin/marketplace.json > tmp.json && mv tmp.json .claude-plugin/marketplace.json
+
+      - name: Bump marketplace.json plugin version
+        run: |
+          jq --arg v "${{ steps.version.outputs.version }}" \
+            '.plugins[0].version = $v' \
+            .claude-plugin/marketplace.json > tmp.json && mv tmp.json .claude-plugin/marketplace.json
+
+      - name: Bump plugin.json version
+        run: |
+          jq --arg v "${{ steps.version.outputs.version }}" \
+            '.version = $v' \
+            plugins/aws-dev-toolkit/.claude-plugin/plugin.json > tmp.json \
+            && mv tmp.json plugins/aws-dev-toolkit/.claude-plugin/plugin.json
+
+      - name: Verify versions match
+        run: |
+          v="${{ steps.version.outputs.version }}"
+          m1=$(jq -r '.metadata.version' .claude-plugin/marketplace.json)
+          m2=$(jq -r '.plugins[0].version' .claude-plugin/marketplace.json)
+          p=$(jq -r '.version' plugins/aws-dev-toolkit/.claude-plugin/plugin.json)
+          if [ "$m1" != "$v" ] || [ "$m2" != "$v" ] || [ "$p" != "$v" ]; then
+            echo "Version mismatch: expected $v, got marketplace=$m1, plugin_entry=$m2, plugin=$p"
+            exit 1
+          fi
+          echo "All versions set to $v"
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .claude-plugin/marketplace.json plugins/aws-dev-toolkit/.claude-plugin/plugin.json
+          git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
+          git push origin main
+
+      - name: Generate changelog from commits
+        id: changelog
+        run: |
+          # Get commits since last tag (excluding current)
+          PREV_TAG=$(git tag --sort=-version:refname | head -2 | tail -1 2>/dev/null || echo "")
+          if [ -z "$PREV_TAG" ] || [ "$PREV_TAG" = "v${{ steps.version.outputs.version }}" ]; then
+            CHANGELOG=$(git log --oneline --no-decorate HEAD~10..HEAD)
+          else
+            CHANGELOG=$(git log --oneline --no-decorate "${PREV_TAG}..HEAD")
+          fi
+          # Write to file to avoid escaping issues
+          echo "$CHANGELOG" > /tmp/changelog.txt
+          echo "Generated changelog with $(echo "$CHANGELOG" | wc -l) entries"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body_path: /tmp/changelog.txt
+          generate_release_notes: true

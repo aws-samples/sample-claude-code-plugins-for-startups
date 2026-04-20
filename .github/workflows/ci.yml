@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  trunk-check:
+    name: Trunk Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Trunk Check
+        uses: trunk-io/trunk-action@v1
+        with:
+          check-mode: all
+
+  validate-plugin:
+    name: Validate Plugin Structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate marketplace.json exists and is valid JSON
+        run: jq . .claude-plugin/marketplace.json > /dev/null
+
+      - name: Validate plugin.json exists and is valid JSON
+        run: jq . plugins/aws-dev-toolkit/.claude-plugin/plugin.json > /dev/null
+
+      - name: Validate all skills have SKILL.md with frontmatter
+        run: |
+          errors=0
+          for skill_dir in plugins/*/skills/*/; do
+            skill_file="${skill_dir}SKILL.md"
+            if [ ! -f "$skill_file" ]; then
+              echo "ERROR: Missing SKILL.md in $skill_dir"
+              errors=$((errors + 1))
+              continue
+            fi
+            # Check for YAML frontmatter (starts with ---)
+            if ! head -1 "$skill_file" | grep -q '^---$'; then
+              echo "ERROR: Missing YAML frontmatter in $skill_file"
+              errors=$((errors + 1))
+              continue
+            fi
+            # Check for required frontmatter fields
+            if ! grep -q '^name:' "$skill_file"; then
+              echo "ERROR: Missing 'name' in frontmatter of $skill_file"
+              errors=$((errors + 1))
+            fi
+            if ! grep -q '^description:' "$skill_file"; then
+              echo "ERROR: Missing 'description' in frontmatter of $skill_file"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors error(s)"
+            exit 1
+          fi
+          echo "All skills validated successfully"
+
+      - name: Check referenced files exist
+        run: |
+          errors=0
+          for skill_dir in plugins/*/skills/*/; do
+            skill_file="${skill_dir}SKILL.md"
+            [ ! -f "$skill_file" ] && continue
+            # Find references to references/ files in SKILL.md
+            grep -oP '`references/[^`]+`' "$skill_file" 2>/dev/null | tr -d '`' | while read -r ref; do
+              if [ ! -f "${skill_dir}${ref}" ]; then
+                echo "ERROR: $skill_file references $ref but ${skill_dir}${ref} does not exist"
+                errors=$((errors + 1))
+              fi
+            done
+          done
+          if [ $errors -gt 0 ]; then
+            exit 1
+          fi
+          echo "All referenced files exist"
+
+      - name: Versions are in sync
+        run: |
+          marketplace_version=$(jq -r '.metadata.version' .claude-plugin/marketplace.json)
+          marketplace_plugin_version=$(jq -r '.plugins[0].version' .claude-plugin/marketplace.json)
+          plugin_version=$(jq -r '.version' plugins/aws-dev-toolkit/.claude-plugin/plugin.json)
+
+          echo "marketplace.json metadata.version: $marketplace_version"
+          echo "marketplace.json plugins[0].version: $marketplace_plugin_version"
+          echo "plugin.json version: $plugin_version"
+
+          if [ "$marketplace_version" != "$plugin_version" ] || [ "$marketplace_plugin_version" != "$plugin_version" ]; then
+            echo "ERROR: Version mismatch across files"
+            exit 1
+          fi
+          echo "All versions in sync: $plugin_version"
