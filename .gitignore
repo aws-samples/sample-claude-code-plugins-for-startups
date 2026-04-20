@@ -31,6 +31,11 @@ cdk.out/
 # SAM
 .aws-sam/
 
+# Trunk (keep .trunk/trunk.yaml, ignore the rest)
+.trunk/*
+!.trunk/trunk.yaml
+.trunk/trunk.lock
+
 # Plugin data
 *.log
 
