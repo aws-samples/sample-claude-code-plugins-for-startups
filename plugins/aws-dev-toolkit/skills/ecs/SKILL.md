@@ -1,6 +1,6 @@
 ---
 name: ecs
-description: Design, deploy, and troubleshoot Amazon ECS workloads. Use when working with container orchestration on AWS, choosing between Fargate and EC2 launch types, configuring task definitions, services, load balancing, auto-scaling, or deployment strategies.
+description: This skill should be used when the user asks to "deploy containers on ECS", "set up an ECS service", "choose between Fargate and EC2", "configure ECS task definitions", "set up ECS auto-scaling", "use ECS Express Mode", "migrate from App Runner", or mentions ECS load balancing, deployment strategies, or container orchestration on AWS.
 ---
 
 You are an AWS ECS specialist. When advising on ECS workloads:
@@ -53,73 +53,27 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 
 ## Express Mode
 
-**ECS Express Mode** is the fastest path to a production-ready, load-balanced ECS service. It provisions a complete application stack — Fargate service, ALB with SSL/TLS and ACM certificate, auto-scaling, security groups, CloudWatch logging, and networking — from a single API call requiring only three parameters: a container image, task execution role, and infrastructure role. No additional charge beyond the underlying resources. AWS recommends Express Mode as the migration path from App Runner (closing to new customers April 30, 2026).
+**ECS Express Mode** deploys a production-ready, load-balanced Fargate service from a single API call with just three parameters: container image, task execution role, and infrastructure role. No additional charge. AWS recommends Express Mode as the App Runner replacement (closing to new customers April 30, 2026).
 
-**Pros:**
-- **3-parameter deployment** — Container image, execution role, infrastructure role. That's it. Everything else gets sensible defaults.
-- **Production-ready from day one** — Canary deployments, AZ rebalancing, auto-scaling (CPU/memory/request count), health checks, HTTPS with auto-provisioned ACM certificate, CloudWatch logging — all configured automatically.
-- **Full ECS underneath** — All underlying resources (service, task definition, ALB, security groups, scaling policies) are created in your account and remain directly accessible. You can customize any resource after creation without leaving Express Mode.
-- **ALB sharing across services** — Up to 25 Express Mode services in the same VPC share an ALB via host-header routing, significantly reducing per-service cost. Express Mode auto-provisions and deprovisions ALBs as services are added/removed.
-- **Cluster sharing** — Express Mode services can coexist in the same cluster with standard ECS services.
-- **IaC support** — Available via Console, CLI, SDKs, CloudFormation, Terraform, and the AWS Labs MCP Server for ECS.
-- **No vendor lock-in risk** — Unlike App Runner, Express Mode is just ECS. You can "eject" to standard ECS management at any time by managing the underlying resources directly.
+**Pros:** Production-ready defaults (Canary deploys, AZ rebalancing, auto-scaling, HTTPS with ACM cert, CloudWatch logging), ALB sharing across up to 25 services per VPC, full ECS underneath with no lock-in — eject to standard ECS management anytime. Supports Console, CLI, SDKs, CloudFormation, Terraform, and MCP Server.
 
-**Cons / Limitations:**
-- **HTTP/HTTPS workloads only** — Express Mode provisions an ALB and expects HTTP traffic. Not suitable for TCP/UDP services (use NLB + standard ECS), queue workers, batch jobs, gRPC without HTTP/2, or non-web workloads.
-- **Fargate only** — No EC2 launch type. Rules out GPU instances, Graviton selection, host-level access, Docker-in-Docker, EBS volume mounts, or custom AMIs.
-- **Canary deployment locked** — Deployment strategy is set to Canary and cannot be changed after creation. No rolling update or Blue/Green (CodeDeploy) option.
-- **Load balancer config immutable** — Load balancer configurations cannot be updated on Express Mode services. If you need NLB, custom listener rules, or multi-protocol support, use standard ECS.
-- **Service name and cluster immutable after create** — Cannot be changed on updates.
-- **Subnet lock-in per VPC** — The first Express Mode service in a VPC defines the subnets for that VPC's shared ALB (internet-facing or internal). Subsequent services must match those AZs.
-- **Single container only** — No sidecar support in the Express Mode API. If you need envoy proxies, log routers, or datadog agents as sidecars, you must add them by editing the task definition directly after creation.
-- **Default VPC requirements** — If no subnets are specified, requires a default VPC with at least two public subnets in two AZs with at least 8 free IPs per CIDR block per subnet.
-- **x86_64 Linux only by default** — Defaults to X86_64 architecture on Linux. ARM/Graviton requires post-creation task definition changes.
-- **Container name matters** — The default container is named "Main". Renaming it can break Express Mode's ability to manage subsequent updates via the Express Mode Console or APIs.
+**Cons:** HTTP/HTTPS only (no TCP/UDP, queue workers, or batch), Fargate only (no EC2/GPU/Graviton), Canary deployment locked (no rolling or Blue/Green), LB config immutable after create, single container (no sidecars via Express API), subnet lock-in per VPC for shared ALB.
 
-**Key defaults set by Express Mode** (all underlying resources remain accessible for direct management):
+For full pros/cons, defaults table, IAM roles, CLI commands, and decision matrix, consult **`references/express-mode.md`**.
 
-| Resource | Default | Customizable via Express Mode? |
-|----------|---------|-------------------------------|
-| Launch type | Fargate capacity provider | No |
-| Task CPU/Memory | 1 vCPU / 2 GB | Yes (`--cpu`, `--memory`) |
-| Deployment strategy | Canary | No (locked) |
-| AZ rebalancing | Enabled | No (editable on service directly) |
-| Auto-scaling metric | CPU at 60% target | Yes (`--scaling-target`) |
-| Min/Max tasks | 1 / 20 | Yes (`--scaling-target`) |
-| Health check grace | 300s | No (editable on service directly) |
-| Container port | 80 | Yes (`--primary-container`) |
-| Health check path | `/` | Yes (`--health-check-path`) |
-| Logging | CloudWatch Logs, non-blocking, 25MB buffer | Yes (log group, prefix) |
-| Subnets | Default VPC public subnets | Yes (`--network-configuration`) |
-| ALB scheme | Internet-facing (public) or Internal (private) | Based on subnet type |
-
-**Express Mode CLI commands:**
 ```bash
-# Create an Express Mode service (minimal — 3 required params)
+# Create Express Mode service (minimal)
 aws ecs create-express-gateway-service \
   --execution-role-arn arn:aws:iam::role/ecsTaskExecutionRole \
   --infrastructure-role-arn arn:aws:iam::role/ecsInfrastructureRoleForExpressServices \
   --primary-container 'image=nginx'
 
-# Create with custom scaling and env vars
-aws ecs create-express-gateway-service \
-  --execution-role-arn arn:aws:iam::role/ecsTaskExecutionRole \
-  --infrastructure-role-arn arn:aws:iam::role/ecsInfrastructureRoleForExpressServices \
-  --primary-container 'image=my-app:v1,port=8080' \
-  --scaling-target '{"minTaskCount": 2}' \
-  --service-name my-api
+# Monitor deployment (interactive)
+aws ecs monitor-express-gateway-service --service-arn <service-arn>
 
-# Monitor an Express Mode deployment (interactive)
-aws ecs monitor-express-gateway-service \
-  --service-arn arn:aws:ecs:us-east-1:123456789012:service/my-cluster/my-svc
-
-# Delete an Express Mode service
+# Delete
 aws ecs delete-express-gateway-service --service <service-name-or-arn>
 ```
-
-**When to use Express Mode vs standard ECS:** Use Express Mode for stateless HTTP/HTTPS web apps and APIs where you want production-ready defaults fast. Use standard ECS services when you need EC2 launch type, GPU/Graviton, NLB, custom deployment strategies, TCP/UDP workloads, sidecars in the Express API, or non-HTTP workloads like queue workers and batch jobs.
-
-> **Reference:** [Amazon ECS Express Mode Overview](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html) | [Resources created by Express Mode](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-work.html) | [Creating an Express Mode service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-create-full.html)
 
 ## Deployment Strategies
 
@@ -197,3 +151,10 @@ aws logs tail /ecs/my-task --follow
 - **No deployment circuit breaker**: Without it, a bad deployment will keep cycling failing tasks indefinitely, consuming capacity and generating noise.
 - **Putting secrets in environment variables**: Use the `secrets` field with Secrets Manager or SSM Parameter Store references. Environment variables are visible in the console and API.
 - **Running as root**: Set `user` in the task definition to a non-root user. Combine with `readonlyRootFilesystem` for defense in depth.
+
+## Additional Resources
+
+### Reference Files
+
+For detailed documentation and decision guidance, consult:
+- **`references/express-mode.md`** — Full Express Mode pros/cons, defaults table, IAM roles, CLI commands, resource sharing details, Express Mode vs standard ECS decision matrix, and official AWS documentation links
