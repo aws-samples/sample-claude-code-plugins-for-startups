@@ -62,7 +62,7 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 
 AWS Copilot is the fastest path from code to running ECS service. Use it for greenfield projects:
 
-```
+```bash
 copilot init                      # Initialize app, service, and environment
 copilot svc deploy                # Deploy service
 copilot svc logs --follow         # Stream logs

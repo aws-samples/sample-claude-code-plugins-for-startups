@@ -1,0 +1,8 @@
+# Yamllint config — relaxed for GitHub Actions workflows
+extends: default
+rules:
+  document-start: disable
+  truthy:
+    check-keys: false
+  line-length:
+    max: 200
