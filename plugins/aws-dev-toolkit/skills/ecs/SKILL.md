@@ -1,6 +1,6 @@
 ---
 name: ecs
-description: Design, deploy, and troubleshoot Amazon ECS workloads. Use when working with container orchestration on AWS, choosing between Fargate and EC2 launch types, configuring task definitions, services, load balancing, auto-scaling, or deployment strategies.
+description: This skill should be used when the user asks to "deploy containers on ECS", "set up an ECS service", "choose between Fargate and EC2", "configure ECS task definitions", "set up ECS auto-scaling", "use ECS Express Mode", "migrate from App Runner", or mentions ECS load balancing, deployment strategies, or container orchestration on AWS.
 ---
 
 You are an AWS ECS specialist. When advising on ECS workloads:
@@ -51,6 +51,18 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 - Set `minCapacity` >= 2 for production services (multi-AZ resilience).
 - Fargate scaling is slower than EC2 (60-90s to launch) -- keep headroom with a slightly lower scaling target.
 
+## Express Mode
+
+**ECS Express Mode** deploys a production-ready, load-balanced Fargate service from a single API call with just three parameters: container image, task execution role, and infrastructure role. No additional charge. AWS recommends Express Mode as the App Runner replacement (closing to new customers April 30, 2026).
+
+**Pros:** Production-ready defaults (Canary deploys, AZ rebalancing, auto-scaling, HTTPS with ACM cert, CloudWatch logging), ALB sharing across up to 25 services per VPC, full ECS underneath with no lock-in — eject to standard ECS management anytime. Supports Console, CLI, SDKs, CloudFormation, Terraform, and MCP Server.
+
+**Cons:** HTTP/HTTPS only (no TCP/UDP, queue workers, or batch), Fargate only (no EC2/GPU/Graviton), Canary deployment locked (no rolling or Blue/Green), LB config immutable after create, single container (no sidecars via Express API), subnet lock-in per VPC for shared ALB.
+
+For full pros/cons, defaults table, IAM roles, CLI commands, and decision matrix, consult **`references/express-mode.md`**.
+
+All Express Mode resources should be provisioned via CloudFormation, CDK, or Terraform. Use the `aws-docs` MCP tools or consult **`references/express-mode.md`** for API parameters and IaC examples.
+
 ## Deployment Strategies
 
 - **Rolling update** (default): Good for most workloads. Set `minimumHealthyPercent: 100` and `maximumPercent: 200` to deploy with zero downtime.
@@ -58,41 +70,41 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 - **Canary**: Use CodeDeploy with `CodeDeployDefault.ECSCanary10Percent5Minutes` for high-risk changes.
 - Circuit breaker: Always enable `deploymentCircuitBreaker` with `rollback: true` to auto-rollback failed deployments.
 
-## Copilot CLI
+## Provisioning
 
-AWS Copilot is the fastest path from code to running ECS service. Use it for greenfield projects:
+All ECS resources (clusters, task definitions, services, load balancers, auto-scaling) should be provisioned via IaC — CloudFormation, CDK, or Terraform. Never create or mutate infrastructure with imperative CLI commands. Use the `cdk-docs` or `cloudformation-docs` MCP tools for current resource properties.
 
-```
-copilot init                      # Initialize app, service, and environment
-copilot svc deploy                # Deploy service
-copilot svc logs --follow         # Stream logs
-copilot svc status                # Health and task status
-copilot pipeline init             # CI/CD pipeline with CodePipeline
-```
+## Observability & Debugging CLI
 
-## Common CLI Commands
+CLI usage should be limited to read-only operations, observability, and interactive debugging:
 
 ```bash
-# Create a cluster
-aws ecs create-cluster --cluster-name my-cluster --capacity-providers FARGATE FARGATE_SPOT
+# Describe cluster status
+aws ecs describe-clusters --clusters my-cluster --include STATISTICS ATTACHMENTS
 
-# Register a task definition
-aws ecs register-task-definition --cli-input-json file://task-def.json
+# List services in a cluster
+aws ecs list-services --cluster my-cluster
 
-# Create/update a service
-aws ecs create-service --cluster my-cluster --service-name my-svc --task-definition my-task:1 --desired-count 2 --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[subnet-xxx],securityGroups=[sg-xxx],assignPublicIp=DISABLED}"
+# Describe a service (deployment status, events, task counts)
+aws ecs describe-services --cluster my-cluster --services my-svc
 
-# Force new deployment (pulls latest image for :latest tag)
-aws ecs update-service --cluster my-cluster --service my-svc --force-new-deployment
+# List running tasks
+aws ecs list-tasks --cluster my-cluster --service-name my-svc --desired-status RUNNING
 
-# Run a one-off task
-aws ecs run-task --cluster my-cluster --task-definition my-task --launch-type FARGATE --network-configuration "..."
+# Describe a task (container status, stopped reason, network)
+aws ecs describe-tasks --cluster my-cluster --tasks <task-id>
 
 # Exec into a running container (requires ECS Exec enabled)
 aws ecs execute-command --cluster my-cluster --task <task-id> --container my-container --interactive --command "/bin/sh"
 
 # Tail logs
 aws logs tail /ecs/my-task --follow
+
+# Describe task definition (inspect current config)
+aws ecs describe-task-definition --task-definition my-task
+
+# Check service events for deployment issues
+aws ecs describe-services --cluster my-cluster --services my-svc --query "services[].events[:5]"
 ```
 
 ## Output Format
@@ -127,3 +139,10 @@ aws logs tail /ecs/my-task --follow
 - **No deployment circuit breaker**: Without it, a bad deployment will keep cycling failing tasks indefinitely, consuming capacity and generating noise.
 - **Putting secrets in environment variables**: Use the `secrets` field with Secrets Manager or SSM Parameter Store references. Environment variables are visible in the console and API.
 - **Running as root**: Set `user` in the task definition to a non-root user. Combine with `readonlyRootFilesystem` for defense in depth.
+
+## Additional Resources
+
+### Reference Files
+
+For detailed documentation and decision guidance, consult:
+- **`references/express-mode.md`** — Full Express Mode pros/cons, defaults table, IAM roles, CLI commands, resource sharing details, Express Mode vs standard ECS decision matrix, and official AWS documentation links
