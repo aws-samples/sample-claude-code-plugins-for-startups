@@ -8,7 +8,7 @@ Specialist guidance for MLOps on AWS. Covers platform selection, training job co
 ## Process
 
 1. Identify the ML workload characteristics: model type (classical ML, deep learning, foundation model), training data volume, inference latency requirements, traffic pattern, team expertise
-2. Use the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify current SageMaker instance types, limits, pricing, and feature availability
+2. Use the `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`) to verify current SageMaker instance types, limits, pricing, and feature availability
 3. Select the appropriate MLOps platform using the decision matrix below
 4. Design the training infrastructure (instance selection, distributed strategy, Spot configuration)
 5. Design the inference topology (real-time, serverless, batch, async)

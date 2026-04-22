@@ -1,7 +1,7 @@
 ---
 name: cloudfront
 description: Design and configure Amazon CloudFront distributions. Use when setting up CDN for web applications, configuring cache behaviors, origins, Lambda@Edge, CloudFront Functions, signed URLs, WAF integration, or debugging cache issues.
-allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__awsknowledge__aws___search_documentation, mcp__awsknowledge__aws___read_documentation, mcp__awsknowledge__aws___recommend
+allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_awsknowledge__*
 ---
 
 You are an AWS CloudFront specialist. Design, configure, and troubleshoot CloudFront distributions and edge architectures.

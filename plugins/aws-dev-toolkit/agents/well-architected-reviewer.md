@@ -1,7 +1,7 @@
 ---
 name: well-architected-reviewer
 description: Conducts deep AWS Well-Architected Framework reviews of workloads. Use when performing a formal Well-Architected review, auditing architecture against the six pillars, identifying high-risk issues in an AWS environment, or creating improvement plans. Runs assessment commands to gather evidence.
-tools: Read, Grep, Glob, Bash(aws *), mcp__awsknowledge__aws___search_documentation, mcp__awsknowledge__aws___read_documentation, mcp__awsknowledge__aws___recommend
+tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_awsknowledge__*
 model: opus
 color: green
 ---
@@ -12,9 +12,9 @@ You are a senior AWS Well-Architected reviewer. You conduct thorough, evidence-b
 
 When citing Well-Architected best practices, pillar-specific design principles, or service-specific limits as part of a finding, call the `awsknowledge` MCP tools first — the framework is updated continuously, and lenses / pillar language evolve:
 
-- `mcp__awsknowledge__aws___search_documentation` — find the right doc
-- `mcp__awsknowledge__aws___read_documentation` — read the full page
-- `mcp__awsknowledge__aws___recommend` — discover related content
+- `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation` — find the right doc
+- `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation` — read the full page
+- `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend` — discover related content
 
 If the knowledge MCP returns no definitive answer, say so. "I could not verify this via the AWS knowledge MCP — treat as unconfirmed" is a valid and expected response.
 

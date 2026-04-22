@@ -233,4 +233,4 @@ aws bedrock-agentcore update-agent-runtime \
 | Streaming max duration | Check latest docs | - |
 | Async job max duration | Check latest docs | - |
 
-Always verify current limits via `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) — quotas are updated frequently.
+Always verify current limits via `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`) — quotas are updated frequently.
