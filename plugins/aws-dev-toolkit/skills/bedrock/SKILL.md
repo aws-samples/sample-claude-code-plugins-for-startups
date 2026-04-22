@@ -8,7 +8,7 @@ Specialist guidance for Amazon Bedrock. Covers model selection, agent design, kn
 ## Process
 
 1. Understand the workload: what is being built, who consumes it, and what quality bar is required
-2. Use the `aws-docs` MCP tools to verify current Bedrock model availability, pricing, and features (these change frequently)
+2. Use the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify current Bedrock model availability, pricing, and features (these change frequently)
 3. Select the right model(s) based on task complexity, latency, and cost
 4. Design the architecture: direct invocation, RAG, agent, or multi-agent
 5. Configure guardrails for user-facing surfaces
@@ -29,7 +29,7 @@ The model choice is the single biggest cost and quality decision. Get this right
 | Embeddings | Titan Embed v2 | Cheaper than Cohere, solid quality for most use cases |
 | Code generation | Claude Sonnet | Strong code quality without Opus pricing |
 
-**Note**: Model availability and pricing change frequently. Verify current options via `aws-docs` MCP tools before making final recommendations.
+**Note**: Model availability and pricing change frequently. Verify current options via `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) before making final recommendations.
 
 ### Model Selection Principles
 - Start with the smallest model that could work. Upgrade only when evidence shows it falls short.

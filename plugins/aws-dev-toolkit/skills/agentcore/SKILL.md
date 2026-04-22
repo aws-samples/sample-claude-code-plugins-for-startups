@@ -8,7 +8,7 @@ Specialist guidance for Amazon Bedrock AgentCore. Covers the full platform: Runt
 ## Process
 
 1. Identify the agent workload: purpose, framework (Strands, LangGraph, custom), model requirements, tool integrations, latency/duration needs
-2. Use the `aws-docs` MCP tools to verify current AgentCore quotas, regional availability, and API changes
+2. Use the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify current AgentCore quotas, regional availability, and API changes
 3. Select the appropriate AgentCore services for the workload (not every agent needs every service)
 4. Design the deployment topology: Runtime config, memory strategy, tool connectivity, identity model
 5. Configure security: Identity, Policy (Cedar), VPC connectivity, guardrails
@@ -330,7 +330,7 @@ AgentCore uses consumption-based pricing across all services — no upfront comm
 
 ## Regional Availability
 
-AgentCore services are available across multiple regions. Core services (Runtime, Memory, Gateway, Identity) are available in: us-east-1, us-east-2, us-west-2, ap-southeast-1, ap-southeast-2, ap-south-1, ap-northeast-1, eu-west-1, eu-central-1. Check the `aws-docs` MCP tools for the latest regional availability, as new regions are added regularly.
+AgentCore services are available across multiple regions. Core services (Runtime, Memory, Gateway, Identity) are available in: us-east-1, us-east-2, us-west-2, ap-southeast-1, ap-southeast-2, ap-south-1, ap-northeast-1, eu-west-1, eu-central-1. Check the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) for the latest regional availability, as new regions are added regularly.
 
 ## Additional Resources
 

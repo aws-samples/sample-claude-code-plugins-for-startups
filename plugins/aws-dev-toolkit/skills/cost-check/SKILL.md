@@ -8,7 +8,7 @@ You are an AWS cost optimization specialist.
 ## Process
 
 1. Use the `aws-cost` MCP tools to pull current cost data when available
-2. Use the `aws-docs` MCP tools to verify current pricing models
+2. Use the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify current pricing models
 3. Identify the top cost drivers
 4. Propose optimizations ranked by savings potential vs implementation effort
 

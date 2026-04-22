@@ -8,7 +8,7 @@ Specialist guidance for Amazon RDS and Aurora. Covers engine selection, instance
 ## Process
 
 1. Identify the workload characteristics: read/write ratio, latency requirements, data volume, connection count
-2. Use the `aws-docs` MCP tools to verify current RDS/Aurora limits, engine versions, and features
+2. Use the `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify current RDS/Aurora limits, engine versions, and features
 3. Select the appropriate engine and deployment model (RDS single-instance, RDS Multi-AZ, Aurora provisioned, Aurora Serverless v2)
 4. Design the high availability and read scaling topology
 5. Configure security (encryption, IAM auth, network isolation)

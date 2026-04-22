@@ -30,7 +30,7 @@ Apply the `aws-architect` skill's process:
 1. Evaluate against the six Well-Architected pillars
 2. Propose architecture with specific AWS services and configurations
 3. Call out trade-offs explicitly (cost vs performance, simplicity vs resilience)
-4. Use `aws-docs` MCP tools to verify service limits and feature availability
+4. Use `awsknowledge` MCP tools (`mcp__awsknowledge__aws___search_documentation`, `mcp__awsknowledge__aws___read_documentation`, `mcp__awsknowledge__aws___recommend`) to verify service limits and feature availability
 5. Describe the architecture flow (data path, request path)
 
 **Keep it simple.** Start with the simplest architecture that meets requirements. A Lambda + DynamoDB API is better than EKS for 100 users.

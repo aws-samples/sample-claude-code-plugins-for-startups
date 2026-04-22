@@ -113,6 +113,14 @@ Some skills are invoked explicitly via slash commands:
 | `awsknowledge` | http | `knowledge-mcp.global.api.aws` — AWS documentation search, recommendations, regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` — Service pricing data, cost reports, IaC cost analysis |
 
+### Why the `awsknowledge` MCP matters
+
+Training data on AWS services is stale by design — APIs, quotas, limits, and regional availability change between model releases. Every SME agent in this plugin is wired to call the `awsknowledge` MCP for factual claims about API names, quotas, parameter defaults, and feature support. This keeps recommendations grounded in the current AWS documentation rather than whatever was true at training cutoff. Available tools:
+
+- `mcp__awsknowledge__aws___search_documentation` — keyword search across AWS docs
+- `mcp__awsknowledge__aws___read_documentation` — fetch full page content
+- `mcp__awsknowledge__aws___recommend` — discover related docs for a page
+
 ## Hooks
 
 - After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), reminds you to validate before deploying
