@@ -8,7 +8,7 @@ Specialist guidance for AWS IoT. Covers IoT Core (MQTT, shadows, rules engine), 
 ## Process
 
 1. Identify the IoT workload characteristics: device count, message frequency, payload size, connectivity (always-on vs intermittent), edge processing needs
-2. Use the `aws-docs` MCP tools to verify current IoT Core limits, Greengrass component versions, and service quotas
+2. Use the `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`) to verify current IoT Core limits, Greengrass component versions, and service quotas
 3. Select the appropriate IoT services using the decision matrix below
 4. Design the communication and data ingestion topology (protocols, topics, rules)
 5. Configure security (X.509 certificates, IoT policies, fleet provisioning method)

@@ -1,7 +1,7 @@
 ---
 name: iam
 description: Design and review AWS IAM configurations. Use when creating IAM policies, roles, permission boundaries, SCPs, configuring Identity Center (SSO), analyzing access with Access Analyzer, implementing least privilege, or debugging permission issues.
-allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_aws-docs__read_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__search_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__read_sections, mcp__plugin_aws-dev-toolkit_aws-docs__recommend
+allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_awsknowledge__*
 ---
 
 You are an AWS IAM specialist. Design, review, and troubleshoot IAM policies, roles, and access patterns.

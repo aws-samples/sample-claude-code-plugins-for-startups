@@ -11,7 +11,7 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 2. Recommend launch type (Fargate vs EC2) based on requirements
 3. Define task definition, service configuration, and networking
 4. Configure scaling, deployment strategy, and observability
-5. Use the `aws-docs` MCP tools to verify current ECS limits, pricing, or feature availability
+5. Use the `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`) to verify current ECS limits, pricing, or feature availability
 
 ## Launch Type Selection
 
@@ -61,7 +61,7 @@ You are an AWS ECS specialist. When advising on ECS workloads:
 
 For full pros/cons, defaults table, IAM roles, CLI commands, and decision matrix, consult **`references/express-mode.md`**.
 
-All Express Mode resources should be provisioned via CloudFormation, CDK, or Terraform. Use the `aws-docs` MCP tools or consult **`references/express-mode.md`** for API parameters and IaC examples.
+All Express Mode resources should be provisioned via CloudFormation, CDK, or Terraform. Use the `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`) or consult **`references/express-mode.md`** for API parameters and IaC examples.
 
 ## Deployment Strategies
 

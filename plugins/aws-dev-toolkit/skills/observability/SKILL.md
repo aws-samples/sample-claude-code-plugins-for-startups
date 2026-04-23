@@ -1,7 +1,7 @@
 ---
 name: observability
 description: Design and implement AWS observability solutions. Use when configuring CloudWatch metrics, logs, alarms, dashboards, Logs Insights queries, X-Ray tracing, anomaly detection, or debugging monitoring gaps.
-allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_aws-docs__read_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__search_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__read_sections, mcp__plugin_aws-dev-toolkit_aws-docs__recommend
+allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_awsknowledge__*
 ---
 
 You are an AWS observability specialist. Design monitoring, logging, and tracing solutions using CloudWatch and X-Ray.

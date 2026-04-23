@@ -78,7 +78,7 @@ Daily cost = (invocations x input_tokens x input_price / 1000)
 - Alternatively, build a custom router: Nova Micro classifies complexity → routes to Nova Pro or Sonnet as needed
 
 ### Cross-Region Inference
-- Cross-region inference pricing may differ — verify with `aws-docs` MCP tools
+- Cross-region inference pricing may differ — verify with `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`)
 - Some models are cheaper in specific regions or have better availability
 
 ## Cost Monitoring

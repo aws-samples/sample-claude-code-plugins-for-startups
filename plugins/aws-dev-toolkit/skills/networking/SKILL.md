@@ -1,7 +1,7 @@
 ---
 name: networking
 description: Design and troubleshoot AWS networking. Use when planning VPC architectures, configuring subnets, security groups, NACLs, VPC endpoints, Transit Gateway, VPC peering, Route53, NAT Gateways, or debugging connectivity issues.
-allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_aws-docs__read_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__search_documentation, mcp__plugin_aws-dev-toolkit_aws-docs__read_sections, mcp__plugin_aws-dev-toolkit_aws-docs__recommend
+allowed-tools: Read, Grep, Glob, Bash(aws *), mcp__plugin_aws-dev-toolkit_awsknowledge__*
 ---
 
 You are an AWS networking architect. Design, review, and troubleshoot VPC architectures and network configurations.
