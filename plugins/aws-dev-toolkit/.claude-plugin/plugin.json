@@ -6,5 +6,5 @@
     "name": "aws-samples"
   },
   "keywords": ["aws", "cdk", "cloudformation", "terraform", "serverless", "well-architected", "iac", "migration", "gcp", "azure", "bedrock"],
-  "license": "MIT"
+  "license": "MIT-0"
 }
