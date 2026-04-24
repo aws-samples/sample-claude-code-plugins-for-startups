@@ -172,7 +172,7 @@ Specialist guidance for Amazon RDS and Aurora. Covers engine selection, instance
 
 ## Migration Guidance
 
-For migrating to RDS/Aurora, coordinate with the `migration-assessment` skill for full assessment workflows.
+For migrating to RDS/Aurora, coordinate with the `migration-advisor` agent for full assessment workflows.
 
 ### Common Migration Paths
 - **Self-managed MySQL/PostgreSQL → Aurora**: Use AWS DMS for minimal-downtime migration with CDC
@@ -194,7 +194,7 @@ For detailed operational guidance, consult:
 - **`references/monitoring-operations.md`** — CloudWatch alarm thresholds, Performance Insights wait event analysis, Enhanced Monitoring, backup verification, failover testing, connection diagnostics, and common CLI commands
 
 ### Related Skills
-- **`migration-assessment`** — Full migration assessment workflows (DMS, SCT, migration waves)
+- **`migration-advisor`** (agent) — Full migration assessment workflows (DMS, SCT, migration waves)
 - **`cost-check`** — Detailed cost analysis and Reserved Instance recommendations
 - **`security-review`** — IAM, network, and encryption audit for database configurations
 - **`networking`** — VPC design, subnet planning, and security group configuration

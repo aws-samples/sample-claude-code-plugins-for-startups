@@ -43,7 +43,7 @@ Skills activate automatically based on context — no special commands needed. J
 "I want to build a serverless API for processing images"        → aws-plan
 "Compare ECS vs EKS for my workload"                            → aws-compare
 "Show me a diagram of this architecture"                        → aws-diagram
-"We're moving from GCP to AWS"                                  → migration-assessment
+"We're moving from GCP to AWS"                                  → migration-advisor (agent)
 ```
 
 **Slash Commands**
@@ -55,7 +55,6 @@ Some skills are invoked explicitly via slash commands:
 /aws-dev-toolkit:iac-scaffold cdk "Serverless API with Lambda and DynamoDB"
 /aws-dev-toolkit:aws-health-check us-east-1
 /aws-dev-toolkit:aws-diagram from-iac
-/aws-dev-toolkit:migration-assessment gcp
 ```
 
 **Sub-Agents (Automatic)**
@@ -193,7 +192,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side across cost, complexity, and trade-offs |
 | `aws-diagram` | Auto / `/aws-diagram` | Generate Mermaid/ASCII architecture diagrams from descriptions or existing IaC |
 | `aws-health-check` | `/aws-health-check [region]` | Quick account health scan — security, cost waste, reliability gaps |
-| `migration-assessment` | Auto | Guided migration assessment — discover source, map services, plan waves, estimate cost |
 | **Scaffolding** | | |
 | `iac-scaffold` | `/iac-scaffold <framework> <desc>` | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | `/strands-agent <description>` | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |

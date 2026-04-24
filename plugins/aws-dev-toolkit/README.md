@@ -1,6 +1,6 @@
 # aws-dev-toolkit
 
-A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 35 skills, 11 sub-agents, 3 MCP servers, and hooks.
+A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 34 skills, 11 sub-agents, 3 MCP servers, and hooks.
 
 ## Installation
 
@@ -57,7 +57,6 @@ Some skills are invoked explicitly via slash commands:
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side |
 | `aws-diagram` | Auto / Slash | Generate Mermaid/ASCII architecture diagrams from descriptions or IaC |
 | `aws-health-check` | Slash | Quick account health scan — security, cost waste, reliability gaps |
-| `migration-assessment` | Auto | Guided migration assessment — discover source, map services, plan waves |
 | **Scaffolding** | | |
 | `iac-scaffold` | Slash | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | Slash | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |
