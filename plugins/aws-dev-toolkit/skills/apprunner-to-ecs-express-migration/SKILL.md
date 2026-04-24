@@ -163,18 +163,7 @@ For services that don't qualify for Quick Migrate, follow the 9-step workflow in
 
 ## Cost Awareness
 
-App Runner bills per-request plus provisioned-memory; ECS Express Mode bills Fargate vCPU + memory per second whenever tasks are running, plus ALB hours and LCU charges.
-
-**Rule of thumb:**
-- **Low-traffic services** (burst or <1 req/sec sustained): Fargate's always-on pricing usually costs **more** than App Runner. Review before committing.
-- **Steady or high-traffic services**: Express Mode is typically cheaper at equivalent CPU/memory.
-- **ALB sharing**: use `awspricing` to look up current ALB hourly and LCU rates. The fixed cost amortizes across up to 25 services. One tiny service on a dedicated ALB is expensive.
-
-**Before migrating, advise the user to:**
-1. Pull App Runner monthly cost from Cost Explorer for the last 30 days
-2. Use `awspricing` MCP tools to look up current Fargate vCPU/memory rates and ALB hourly/LCU charges for the target region
-3. Estimate Fargate cost: `(vCPU × rate + GB × rate) × 730 hours × task count` plus ALB baseline divided by services sharing it
-4. Compare — if ECS Express would cost 2x+ more, consider keeping App Runner until forced migration
+See [references/cost-comparison.md](references/cost-comparison.md) for the full cost comparison workflow. Key point: Fargate's always-on billing can exceed App Runner for low-traffic services. Always run the cost comparison before committing to migration.
 
 ## Infrastructure-as-Code
 
@@ -182,15 +171,7 @@ The workflow produces AWS CLI commands by default. If the user prefers Terraform
 
 ## WAF and CloudFront
 
-**Attachment point differs:**
-- **App Runner:** WAF attaches to the App Runner service directly.
-- **ECS Express Mode:** WAF attaches to the **ALB**. One ALB is shared across up to 25 services, so a WebACL applies to all services behind it.
-
-**Migration implications:**
-- Re-associate the WebACL to the new ALB ARN. Look up `wafv2 associate-web-acl` syntax via `awsknowledge`.
-- If services need different WAF rules, use multiple ALBs or scope rules via host-header match conditions.
-- CloudFront origins re-point from the App Runner URL to the ALB DNS name.
-- Rate-limit counters reset on cutover.
+See [references/waf-cloudfront.md](references/waf-cloudfront.md). Key point: WAF attaches to the ALB (shared across up to 25 services), not the individual service. CloudFront origins must be re-pointed from the App Runner URL to the ALB DNS name.
 
 ## Source Code Services
 
@@ -207,6 +188,8 @@ If the App Runner service deploys from source code (not a container image), it m
 
 - Starting or continuing a migration → [references/migration-workflow.md](references/migration-workflow.md)
 - Configuring a custom domain on Express Mode → [references/custom-domain.md](references/custom-domain.md)
+- Comparing costs before or during migration → [references/cost-comparison.md](references/cost-comparison.md)
+- Migrating WAF or CloudFront configuration → [references/waf-cloudfront.md](references/waf-cloudfront.md)
 - Debugging migration issues → [references/troubleshooting.md](references/troubleshooting.md)
 
 ## Anti-Patterns
@@ -223,7 +206,7 @@ If the App Runner service deploys from source code (not a container image), it m
 ## Limitations
 
 - **This skill does not guarantee zero downtime, data integrity, or cost savings.** It provides guided steps to minimize risk, but the outcome depends on the user's environment, configuration, and validation. Always test thoroughly before cutting over production traffic.
-- There is no official AWS-published App Runner → ECS Express Mode migration guide at the time of writing. This skill is built from the Express Mode launch blog, the AWS CLI reference, the Amazon ECS developer guide, and first-hand migration experience.
+- This skill is informed by the [AWS App Runner availability-change migration guide](https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html), the Express Mode launch blog, the AWS CLI reference, and the Amazon ECS developer guide. Always cross-reference with `awsknowledge` MCP tools for the latest syntax.
 - This skill is designed for one service at a time. For fleet migrations (>10 services), loop the workflow.
 - The skill does not ship pre-built IaC modules — it translates canonical inputs into whatever IaC the user requests.
 - Cost estimates are approximations. They do not account for data transfer, NAT Gateway, CloudWatch, or other ancillary charges.
