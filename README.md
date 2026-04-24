@@ -5,7 +5,6 @@
 Add the marketplace once, then install any plugin from it.
 
 ```bash
-# Add the marketplace
 /plugin marketplace add aws-samples/sample-claude-code-plugins-for-startups
 ```
 
