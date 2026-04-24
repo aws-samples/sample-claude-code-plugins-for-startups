@@ -38,7 +38,17 @@ cdk.out/
 MEMORY/
 .claude/
 
+# Kiro
+.kiro/
+
 # Forked repos (local development only)
 claude-plugins-official/
 agent-plugins/
+
+# Misc
+*.bak
+*.tmp
+*.orig
+.env
+.env.*
 

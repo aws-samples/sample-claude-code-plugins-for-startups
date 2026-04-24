@@ -1,6 +1,6 @@
 # aws-dev-toolkit
 
-A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 34 skills, 11 sub-agents, 3 MCP servers, and hooks.
+A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 35 skills, 11 sub-agents, 3 MCP servers, and hooks.
 
 ## Installation
 
@@ -45,7 +45,7 @@ Some skills are invoked explicitly via slash commands:
 /aws-dev-toolkit:strands-agent "Document processing pipeline"
 ```
 
-## Skills (34)
+## Skills (35)
 
 | Skill | Trigger | Description |
 |---|---|---|
@@ -88,6 +88,7 @@ Some skills are invoked explicitly via slash commands:
 | **Migration** | | |
 | `gcp-to-aws` | Auto | GCP to AWS migration — service mapping, gotchas, assessment |
 | `azure-to-aws` | Auto | Azure to AWS migration — service mapping, gotchas, assessment |
+| `apprunner-to-ecs-express-migration` | Auto | App Runner to ECS Express Mode — guided migration with guardrails |
 
 ## Sub-Agents (11)
 
@@ -116,6 +117,14 @@ Some skills are invoked explicitly via slash commands:
 ## Hooks
 
 - After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), reminds you to validate before deploying
+
+## Optional MCP Servers
+
+Some skills benefit from additional MCP servers that are not bundled with the plugin. These must be configured separately by the user.
+
+| Server | Required by | Setup |
+|---|---|---|
+| `ecs-mcp` | `apprunner-to-ecs-express-migration` | `mcp-proxy-for-aws` over stdio pointing at the regional ECS MCP endpoint (`ecs-mcp.<region>.api.aws/mcp`). Requires `uv`/`uvx` and AWS credentials. See the skill's SKILL.md for the full `mcp.json` snippet. |
 
 ## License
 
