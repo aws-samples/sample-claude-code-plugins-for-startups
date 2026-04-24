@@ -1,5 +1,5 @@
 ---
-name: apprunner-to-ecs-express-migration
+name: migration-apprunner-to-ecs-express
 description: Guided migration from AWS App Runner to Amazon ECS Express Mode. Covers IAM setup, deployment, custom domains, DNS cutover, cost comparison, and troubleshooting. Use when the user asks to "migrate from App Runner", "move to ECS Express Mode", "replace App Runner", or mentions App Runner deprecation.
 ---
 
@@ -214,7 +214,7 @@ If the App Runner service deploys from source code (not a container image), it m
 ## Related Skills
 
 - `ecs` — ECS architecture, launch type selection, task definitions, and Express Mode reference
-- `aws-migrate` — Multi-cloud migration assessment and wave planning
+- `migration-assessment` — Multi-cloud migration assessment and wave planning
 - `iam` — IAM role design and least-privilege policies
 - `networking` — VPC, subnet, and security group design
 - `cost-check` — AWS cost estimation and optimization

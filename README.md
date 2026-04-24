@@ -43,7 +43,7 @@ Skills activate automatically based on context — no special commands needed. J
 "I want to build a serverless API for processing images"        → aws-plan
 "Compare ECS vs EKS for my workload"                            → aws-compare
 "Show me a diagram of this architecture"                        → aws-diagram
-"We're moving from GCP to AWS"                                  → aws-migrate
+"We're moving from GCP to AWS"                                  → migration-assessment
 ```
 
 **Slash Commands**
@@ -55,7 +55,7 @@ Some skills are invoked explicitly via slash commands:
 /aws-dev-toolkit:iac-scaffold cdk "Serverless API with Lambda and DynamoDB"
 /aws-dev-toolkit:aws-health-check us-east-1
 /aws-dev-toolkit:aws-diagram from-iac
-/aws-dev-toolkit:aws-migrate gcp
+/aws-dev-toolkit:migration-assessment gcp
 ```
 
 **Sub-Agents (Automatic)**
@@ -160,14 +160,14 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 4. Produces a structured report with prioritized remediation steps
 
 **"We're moving from GCP to AWS"**
-1. Describe your GCP environment — `gcp-to-aws` maps services to AWS equivalents
+1. Describe your GCP environment — `migration-gcp-to-aws` maps services to AWS equivalents
 2. Run the assessment commands to inventory what's deployed
 3. Review the gotchas for your specific services (global VPCs, Spanner, BigQuery)
 4. Use `iac-scaffold` to generate the target AWS infrastructure
 5. Ask `migration-advisor` for wave planning and cutover strategy
 
 **"We're moving from Azure to AWS"**
-1. Describe your Azure environment — `azure-to-aws` maps services to AWS equivalents
+1. Describe your Azure environment — `migration-azure-to-aws` maps services to AWS equivalents
 2. Run az CLI discovery commands to inventory resources
 3. Pay special attention to identity migration (Azure AD to IAM Identity Center)
 4. Review Cosmos DB and Synapse migration paths (these are complex)
@@ -193,7 +193,7 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side across cost, complexity, and trade-offs |
 | `aws-diagram` | Auto / `/aws-diagram` | Generate Mermaid/ASCII architecture diagrams from descriptions or existing IaC |
 | `aws-health-check` | `/aws-health-check [region]` | Quick account health scan — security, cost waste, reliability gaps |
-| `aws-migrate` | Auto | Guided migration assessment — discover source, map services, plan waves, estimate cost |
+| `migration-assessment` | Auto | Guided migration assessment — discover source, map services, plan waves, estimate cost |
 | **Scaffolding** | | |
 | `iac-scaffold` | `/iac-scaffold <framework> <desc>` | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | `/strands-agent <description>` | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |
@@ -222,8 +222,8 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `mlops` | Auto | End-to-end MLOps — SageMaker, training, inference, pipelines, monitoring |
 | `agentcore` | Auto | Amazon Bedrock AgentCore platform design, deployment, and production ops |
 | **Migration** | | |
-| `gcp-to-aws` | Auto | GCP to AWS migration service mapping, gotchas, and environment assessment |
-| `azure-to-aws` | Auto | Azure to AWS migration service mapping, gotchas, and environment assessment |
+| `migration-gcp-to-aws` | Auto | GCP to AWS migration service mapping, gotchas, and environment assessment |
+| `migration-azure-to-aws` | Auto | Azure to AWS migration service mapping, gotchas, and environment assessment |
 
 **Sub-Agents (11):**
 | Agent | Model | Description |

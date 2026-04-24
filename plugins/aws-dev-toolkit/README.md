@@ -57,7 +57,7 @@ Some skills are invoked explicitly via slash commands:
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side |
 | `aws-diagram` | Auto / Slash | Generate Mermaid/ASCII architecture diagrams from descriptions or IaC |
 | `aws-health-check` | Slash | Quick account health scan — security, cost waste, reliability gaps |
-| `aws-migrate` | Auto | Guided migration assessment — discover source, map services, plan waves |
+| `migration-assessment` | Auto | Guided migration assessment — discover source, map services, plan waves |
 | **Scaffolding** | | |
 | `iac-scaffold` | Slash | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | Slash | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |
@@ -86,9 +86,9 @@ Some skills are invoked explicitly via slash commands:
 | `mlops` | Auto | MLOps — SageMaker, training, inference, pipelines, monitoring |
 | `agentcore` | Auto | Bedrock AgentCore — platform design, deployment, production ops |
 | **Migration** | | |
-| `gcp-to-aws` | Auto | GCP to AWS migration — service mapping, gotchas, assessment |
-| `azure-to-aws` | Auto | Azure to AWS migration — service mapping, gotchas, assessment |
-| `apprunner-to-ecs-express-migration` | Auto | App Runner to ECS Express Mode — guided migration with guardrails |
+| `migration-gcp-to-aws` | Auto | GCP to AWS migration — service mapping, gotchas, assessment |
+| `migration-azure-to-aws` | Auto | Azure to AWS migration — service mapping, gotchas, assessment |
+| `migration-apprunner-to-ecs-express` | Auto | App Runner to ECS Express Mode — guided migration with guardrails |
 
 ## Sub-Agents (11)
 
@@ -124,7 +124,7 @@ Some skills benefit from additional MCP servers that are not bundled with the pl
 
 | Server | Required by | Setup |
 |---|---|---|
-| `ecs-mcp` | `apprunner-to-ecs-express-migration` | `mcp-proxy-for-aws` over stdio pointing at the regional ECS MCP endpoint (`ecs-mcp.<region>.api.aws/mcp`). Requires `uv`/`uvx` and AWS credentials. See the skill's SKILL.md for the full `mcp.json` snippet. |
+| `ecs-mcp` | `migration-apprunner-to-ecs-express` | `mcp-proxy-for-aws` over stdio pointing at the regional ECS MCP endpoint (`ecs-mcp.<region>.api.aws/mcp`). Requires `uv`/`uvx` and AWS credentials. See the skill's SKILL.md for the full `mcp.json` snippet. |
 
 ## License
 

@@ -1,6 +1,6 @@
 ---
-name: aws-migrate
-description: Guided migration assessment and planning — discover source environment, map services, estimate effort, and plan migration waves. Orchestrates gcp-to-aws, azure-to-aws, and the migration-advisor agent.
+name: migration-assessment
+description: Guided migration assessment and planning — discover source environment, map services, estimate effort, and plan migration waves. Orchestrates migration-gcp-to-aws, migration-azure-to-aws, and the migration-advisor agent.
 argument-hint: [source-cloud or "assess"]
 ---
 
@@ -25,8 +25,8 @@ which doctl >/dev/null 2>&1 && echo "DigitalOcean detected"
 ```
 
 Then delegate to the appropriate skill:
-- **GCP** → invoke the `gcp-to-aws` skill for service mapping
-- **Azure** → invoke the `azure-to-aws` skill for service mapping
+- **GCP** → invoke the `migration-gcp-to-aws` skill for service mapping
+- **Azure** → invoke the `migration-azure-to-aws` skill for service mapping
 - **On-prem/Other** → use the `migration-advisor` agent directly
 
 Also spawn the `migration-advisor` agent (`subagent_type: "aws-dev-toolkit:migration-advisor"`) for the detailed discovery commands.
@@ -49,7 +49,7 @@ Ask progressively (2-3 at a time):
 
 ### Phase 3: Service Mapping
 
-Use the source-specific skill (`gcp-to-aws` or `azure-to-aws`) to produce a mapping table. For each service:
+Use the source-specific skill (`migration-gcp-to-aws` or `migration-azure-to-aws`) to produce a mapping table. For each service:
 
 | Source Service | AWS Equivalent | Migration Strategy | Complexity | Notes |
 |---------------|---------------|-------------------|-----------|-------|
@@ -154,8 +154,8 @@ Use the `cost-check` skill or `aws-pricing` MCP tools to estimate:
 
 ## Related Skills
 
-- `gcp-to-aws` — GCP-to-AWS service mapping and migration patterns
-- `azure-to-aws` — Azure-to-AWS service mapping and migration patterns
+- `migration-gcp-to-aws` — GCP-to-AWS service mapping and migration patterns
+- `migration-azure-to-aws` — Azure-to-AWS service mapping and migration patterns
 - `networking` — VPC design, Transit Gateway, VPN, and Direct Connect for landing zones
 - `security-review` — Security validation for the target AWS environment
 - `cost-check` — Cost comparison between source cloud and projected AWS spend

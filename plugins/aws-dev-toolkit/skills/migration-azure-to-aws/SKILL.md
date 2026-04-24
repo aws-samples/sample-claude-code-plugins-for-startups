@@ -1,5 +1,5 @@
 ---
-name: azure-to-aws
+name: migration-azure-to-aws
 description: Azure to AWS migration guidance with service mappings, gotchas, and assessment. Use when migrating from Microsoft Azure, mapping Azure services to AWS equivalents, assessing Azure environments, or planning Azure-to-AWS migrations.
 ---
 
