@@ -1,6 +1,6 @@
 # aws-dev-toolkit
 
-A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 34 skills, 11 sub-agents, 3 MCP servers, and hooks.
+A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 34 skills, 11 sub-agents, and 3 MCP servers.
 
 ## Installation
 
@@ -112,10 +112,6 @@ Some skills are invoked explicitly via slash commands:
 | `awsiac` | stdio | `awslabs.aws-iac-mcp-server` — CloudFormation/CDK/Terraform validation and security scanning |
 | `awsknowledge` | http | `knowledge-mcp.global.api.aws` — AWS documentation search, recommendations, regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` — Service pricing data, cost reports, IaC cost analysis |
-
-## Hooks
-
-- After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), reminds you to validate before deploying
 
 ## Optional MCP Servers
 

@@ -12,7 +12,7 @@ Add the marketplace once, then install any plugin from it.
 
 ### aws-dev-toolkit
 
-A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, 3 MCP servers, and hooks for building, migrating, and reviewing well-architected applications on AWS.
+A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and reviewing well-architected applications on AWS.
 
 ```bash
 /plugin install aws-dev-toolkit@aws-samples
@@ -114,10 +114,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 
 </details>
 
-**Hooks**
-
-- After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), Claude reminds you to validate before deploying
-
 #### Example Workflows
 
 **"I need a new service on AWS"**
@@ -125,7 +121,7 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 2. Answer 3-5 discovery questions (it won't overwhelm you)
 3. Review the proposed architecture, security findings, and cost estimate
 4. Scaffold it — `/iac-scaffold cdk "your description"`
-5. Edit the generated code — the hook reminds you to `cdk synth && cdk diff`
+5. Validate the generated code with `cdk synth && cdk diff` before deploying
 
 **"Should I use Lambda or Fargate?"**
 1. Describe your workload — `aws-compare` evaluates both side-by-side
@@ -245,9 +241,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `awsknowledge` | http | `https://knowledge-mcp.global.api.aws` | AWS documentation search, service recommendations, and regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` | AWS service pricing data, cost reports, and IaC cost analysis |
 
-**Hooks:**
-- Post-edit reminder to validate IaC files before deploying
-
 ## Prerequisites
 
 - [Claude Code](https://code.claude.com) v1.0.33+
@@ -267,9 +260,7 @@ sample-claude-code-plugins-for-startups/
 │       │   └── plugin.json           # Plugin manifest
 │       ├── .mcp.json                 # MCP server configs (3 servers)
 │       ├── skills/                   # 34 skills
-│       ├── agents/                   # 11 sub-agents
-│       └── hooks/
-│           └── hooks.json            # PostToolUse IaC validation
+│       └── agents/                   # 11 sub-agents
 └── README.md
 ```
 
