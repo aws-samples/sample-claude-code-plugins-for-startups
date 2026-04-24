@@ -1,7 +1,7 @@
 {
   "name": "aws-dev-toolkit",
   "version": "0.3.0",
-  "description": "AWS development toolkit — 34 skills, 11 agents, and 3 MCP servers for building, migrating, and reviewing well-architected applications on AWS.",
+  "description": "AWS development toolkit — 34 skills, 11 agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.",
   "author": {
     "name": "aws-samples"
   },

@@ -12,7 +12,7 @@ Add the marketplace once, then install any plugin from it.
 
 ### aws-dev-toolkit
 
-A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and reviewing well-architected applications on AWS.
+A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.
 
 ```bash
 /plugin install aws-dev-toolkit@aws-samples

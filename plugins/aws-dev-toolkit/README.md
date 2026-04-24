@@ -1,6 +1,6 @@
 # aws-dev-toolkit
 
-A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 34 skills, 11 sub-agents, and 3 MCP servers.
+A Claude Code plugin for building, migrating, and performing architecture reviews on AWS. Ships 34 skills, 11 sub-agents, and 3 MCP servers.
 
 ## Installation
 
