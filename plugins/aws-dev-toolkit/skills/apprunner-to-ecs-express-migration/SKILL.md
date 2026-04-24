@@ -86,7 +86,7 @@ Additional guardrails:
 - **Looks up API syntax at the time of use.** Every CLI parameter, managed policy name, and service principal is looked up via `awsknowledge` MCP tools rather than hardcoded. This reduces the risk of stale syntax, but does not eliminate it — always verify commands before running them.
 - **Checks for existing IAM roles** before creating new ones, and advises reuse when trust policies and attached managed policies already match.
 - **Recommends keeping App Runner running after cutover.** Default recommendation: 24–48 hours as a rollback net before deleting.
-- **Flags cost inversions.** For low-traffic services, Fargate's always-on pricing can exceed App Runner.
+- **Runs a cost comparison.** Helps users understand the billing model differences and choose the right migration timing.
 - **Does not touch CI/CD.** Pipeline updates are called out as user action items, not automated.
 
 ## What ECS Express Mode Requires (3 Inputs)
@@ -108,7 +108,7 @@ ECS cluster, task definition, service with canary deployment, ALB with HTTPS, se
 | Health check default | TCP on port | HTTP on `/ping` |
 | VPC | Via VPC connector | VPC-native (awsvpc) |
 | Load balancer | Internal NLB, not accessible | ALB, fully accessible, shared up to 25 services |
-| Source code deploy | Supported | Image only — must containerize first |
+| Source code deploy | Supported | Container image based (containerize source-code services first) |
 
 ## App Runner CPU/Memory → Fargate Mapping
 
@@ -163,7 +163,7 @@ For services that don't qualify for Quick Migrate, follow the 9-step workflow in
 
 ## Cost Awareness
 
-See [references/cost-comparison.md](references/cost-comparison.md) for the full cost comparison workflow. Key point: Fargate's always-on billing can exceed App Runner for low-traffic services. Always run the cost comparison before committing to migration.
+See [references/cost-comparison.md](references/cost-comparison.md) for the full cost comparison workflow. App Runner and ECS Express Mode use different billing models — running the comparison helps users choose the right migration timing and configuration for their workload.
 
 ## Infrastructure-as-Code
 
@@ -196,7 +196,7 @@ If the App Runner service deploys from source code (not a container image), it m
 
 - **Running the Quick Migrate path on a production-critical service**: The quick path skips weighted routing and parallel-run validation. Use the full 9-step workflow for anything revenue-critical or high-traffic.
 - **Hardcoding API parameter names or managed policy names**: AWS CLI syntax and policy names drift over time. Always look them up via `awsknowledge` MCP tools at the time of use.
-- **Skipping the cost comparison**: Fargate's always-on billing can exceed App Runner for low-traffic services. Run the numbers before committing.
+- **Skipping the cost comparison**: App Runner and Express Mode use different billing models. Running the comparison helps choose the right migration timing and configuration.
 - **Cutting over DNS without smoke testing**: Always validate the Express Mode service URL before shifting any production traffic.
 - **Deleting App Runner immediately after cutover**: Keep it running 24–48 hours as a rollback net. Pause first, then delete.
 - **Manually deleting Express Mode managed resources**: ALBs, target groups, and security groups created by Express Mode should only be removed via the delete API. Manual deletion causes orphaned state.
