@@ -73,7 +73,7 @@ These questions are critical for producing a well-scoped architecture. However, 
 
 Classify the workload:
 - **Build**: New application, no existing infrastructure → focus on service selection
-- **Migrate**: Moving from another cloud or on-prem → use `gcp-to-aws` or `azure-to-aws` skills
+- **Migrate**: Moving from another cloud or on-prem → use `migration-gcp-to-aws` or `migration-azure-to-aws` skills
 - **Optimize**: Already on AWS, needs improvement → use `cost-check` and `aws-architect` skills
 
 ## Phase 3: Service Selection Decision Trees

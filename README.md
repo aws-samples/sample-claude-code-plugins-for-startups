@@ -5,7 +5,6 @@
 Add the marketplace once, then install any plugin from it.
 
 ```bash
-# Add the marketplace
 /plugin marketplace add aws-samples/sample-claude-code-plugins-for-startups
 ```
 
@@ -13,7 +12,7 @@ Add the marketplace once, then install any plugin from it.
 
 ### aws-dev-toolkit
 
-A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, 3 MCP servers, and hooks for building, migrating, and reviewing well-architected applications on AWS.
+A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.
 
 ```bash
 /plugin install aws-dev-toolkit@aws-samples
@@ -44,7 +43,7 @@ Skills activate automatically based on context — no special commands needed. J
 "I want to build a serverless API for processing images"        → aws-plan
 "Compare ECS vs EKS for my workload"                            → aws-compare
 "Show me a diagram of this architecture"                        → aws-diagram
-"We're moving from GCP to AWS"                                  → aws-migrate
+"We're moving from GCP to AWS"                                  → migration-advisor (agent)
 ```
 
 **Slash Commands**
@@ -56,7 +55,6 @@ Some skills are invoked explicitly via slash commands:
 /aws-dev-toolkit:iac-scaffold cdk "Serverless API with Lambda and DynamoDB"
 /aws-dev-toolkit:aws-health-check us-east-1
 /aws-dev-toolkit:aws-diagram from-iac
-/aws-dev-toolkit:aws-migrate gcp
 ```
 
 **Sub-Agents (Automatic)**
@@ -116,10 +114,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 
 </details>
 
-**Hooks**
-
-- After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), Claude reminds you to validate before deploying
-
 #### Example Workflows
 
 **"I need a new service on AWS"**
@@ -127,7 +121,7 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 2. Answer 3-5 discovery questions (it won't overwhelm you)
 3. Review the proposed architecture, security findings, and cost estimate
 4. Scaffold it — `/iac-scaffold cdk "your description"`
-5. Edit the generated code — the hook reminds you to `cdk synth && cdk diff`
+5. Validate the generated code with `cdk synth && cdk diff` before deploying
 
 **"Should I use Lambda or Fargate?"**
 1. Describe your workload — `aws-compare` evaluates both side-by-side
@@ -161,14 +155,14 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 4. Produces a structured report with prioritized remediation steps
 
 **"We're moving from GCP to AWS"**
-1. Describe your GCP environment — `gcp-to-aws` maps services to AWS equivalents
+1. Describe your GCP environment — `migration-gcp-to-aws` maps services to AWS equivalents
 2. Run the assessment commands to inventory what's deployed
 3. Review the gotchas for your specific services (global VPCs, Spanner, BigQuery)
 4. Use `iac-scaffold` to generate the target AWS infrastructure
 5. Ask `migration-advisor` for wave planning and cutover strategy
 
 **"We're moving from Azure to AWS"**
-1. Describe your Azure environment — `azure-to-aws` maps services to AWS equivalents
+1. Describe your Azure environment — `migration-azure-to-aws` maps services to AWS equivalents
 2. Run az CLI discovery commands to inventory resources
 3. Pay special attention to identity migration (Azure AD to IAM Identity Center)
 4. Review Cosmos DB and Synapse migration paths (these are complex)
@@ -194,7 +188,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side across cost, complexity, and trade-offs |
 | `aws-diagram` | Auto / `/aws-diagram` | Generate Mermaid/ASCII architecture diagrams from descriptions or existing IaC |
 | `aws-health-check` | `/aws-health-check [region]` | Quick account health scan — security, cost waste, reliability gaps |
-| `aws-migrate` | Auto | Guided migration assessment — discover source, map services, plan waves, estimate cost |
 | **Scaffolding** | | |
 | `iac-scaffold` | `/iac-scaffold <framework> <desc>` | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | `/strands-agent <description>` | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |
@@ -223,8 +216,8 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `mlops` | Auto | End-to-end MLOps — SageMaker, training, inference, pipelines, monitoring |
 | `agentcore` | Auto | Amazon Bedrock AgentCore platform design, deployment, and production ops |
 | **Migration** | | |
-| `gcp-to-aws` | Auto | GCP to AWS migration service mapping, gotchas, and environment assessment |
-| `azure-to-aws` | Auto | Azure to AWS migration service mapping, gotchas, and environment assessment |
+| `migration-gcp-to-aws` | Auto | GCP to AWS migration service mapping, gotchas, and environment assessment |
+| `migration-azure-to-aws` | Auto | Azure to AWS migration service mapping, gotchas, and environment assessment |
 
 **Sub-Agents (11):**
 | Agent | Model | Description |
@@ -248,9 +241,6 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `awsknowledge` | http | `https://knowledge-mcp.global.api.aws` | AWS documentation search, service recommendations, and regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` | AWS service pricing data, cost reports, and IaC cost analysis |
 
-**Hooks:**
-- Post-edit reminder to validate IaC files before deploying
-
 ## Prerequisites
 
 - [Claude Code](https://code.claude.com) v1.0.33+
@@ -270,9 +260,7 @@ sample-claude-code-plugins-for-startups/
 │       │   └── plugin.json           # Plugin manifest
 │       ├── .mcp.json                 # MCP server configs (3 servers)
 │       ├── skills/                   # 34 skills
-│       ├── agents/                   # 11 sub-agents
-│       └── hooks/
-│           └── hooks.json            # PostToolUse IaC validation
+│       └── agents/                   # 11 sub-agents
 └── README.md
 ```
 

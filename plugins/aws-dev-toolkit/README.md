@@ -1,6 +1,6 @@
 # aws-dev-toolkit
 
-A Claude Code plugin for building, migrating, and reviewing well-architected applications on AWS. Ships 35 skills, 11 sub-agents, 3 MCP servers, and hooks.
+A Claude Code plugin for building, migrating, and performing architecture reviews on AWS. Ships 34 skills, 11 sub-agents, and 3 MCP servers.
 
 ## Installation
 
@@ -57,7 +57,6 @@ Some skills are invoked explicitly via slash commands:
 | `aws-compare` | Auto | Compare 2-3 architecture options side-by-side |
 | `aws-diagram` | Auto / Slash | Generate Mermaid/ASCII architecture diagrams from descriptions or IaC |
 | `aws-health-check` | Slash | Quick account health scan — security, cost waste, reliability gaps |
-| `aws-migrate` | Auto | Guided migration assessment — discover source, map services, plan waves |
 | **Scaffolding** | | |
 | `iac-scaffold` | Slash | Scaffold CDK, Terraform, SAM, or CloudFormation projects |
 | `strands-agent` | Slash | Scaffold Strands Agents SDK projects on Bedrock AgentCore (TS/Python) |
@@ -86,9 +85,9 @@ Some skills are invoked explicitly via slash commands:
 | `mlops` | Auto | MLOps — SageMaker, training, inference, pipelines, monitoring |
 | `agentcore` | Auto | Bedrock AgentCore — platform design, deployment, production ops |
 | **Migration** | | |
-| `gcp-to-aws` | Auto | GCP to AWS migration — service mapping, gotchas, assessment |
-| `azure-to-aws` | Auto | Azure to AWS migration — service mapping, gotchas, assessment |
-| `apprunner-to-ecs-express-migration` | Auto | App Runner to ECS Express Mode — guided migration with guardrails |
+| `migration-gcp-to-aws` | Auto | GCP to AWS migration — service mapping, gotchas, assessment |
+| `migration-azure-to-aws` | Auto | Azure to AWS migration — service mapping, gotchas, assessment |
+| `migration-apprunner-to-ecs-express` | Auto | App Runner to ECS Express Mode — guided migration with guardrails |
 
 ## Sub-Agents (11)
 
@@ -114,17 +113,13 @@ Some skills are invoked explicitly via slash commands:
 | `awsknowledge` | http | `knowledge-mcp.global.api.aws` — AWS documentation search, recommendations, regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` — Service pricing data, cost reports, IaC cost analysis |
 
-## Hooks
-
-- After editing an IaC file (`.tf`, `template.yaml`, `*-stack.ts`, etc.), reminds you to validate before deploying
-
 ## Optional MCP Servers
 
 Some skills benefit from additional MCP servers that are not bundled with the plugin. These must be configured separately by the user.
 
 | Server | Required by | Setup |
 |---|---|---|
-| `ecs-mcp` | `apprunner-to-ecs-express-migration` | `mcp-proxy-for-aws` over stdio pointing at the regional ECS MCP endpoint (`ecs-mcp.<region>.api.aws/mcp`). Requires `uv`/`uvx` and AWS credentials. See the skill's SKILL.md for the full `mcp.json` snippet. |
+| `ecs-mcp` | `migration-apprunner-to-ecs-express` | `mcp-proxy-for-aws` over stdio pointing at the regional ECS MCP endpoint (`ecs-mcp.<region>.api.aws/mcp`). Requires `uv`/`uvx` and AWS credentials. See the skill's SKILL.md for the full `mcp.json` snippet. |
 
 ## License
 
