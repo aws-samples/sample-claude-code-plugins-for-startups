@@ -170,13 +170,14 @@ If user provides existing role ARNs, use variables instead and skip iam.tf.
 - Step 5: Create SOCI **v2** index using `soci convert --standalone` — **no containerd required**:
   - Pull image from ECR as OCI layout via `skopeo copy` (streams directly — avoids large `docker save` that can crash Docker Desktop)
   - Run `soci convert --standalone <oci-dir> <output-dir> --format oci-dir` to produce a converted OCI layout containing both the image and SOCI index as sibling manifests in an OCI image index
+  - **CRITICAL:** After `soci convert`, patch the output `index.json` with a tag annotation using `jq` — `soci convert --standalone` does NOT preserve the tag reference in the output OCI layout, so `skopeo copy --all oci:<dir>:<tag>` will fail with "no descriptor found for reference" without this step. Add `org.opencontainers.image.ref.name` annotation to `manifests[0]`.
   - Push the full OCI index to ECR via `skopeo copy --all` (the `--all` flag is critical — without it, skopeo only pushes one manifest and drops the SOCI index)
   - **macOS:** Runs soci + skopeo inside a Docker container (`debian:bookworm-slim`, `--platform linux/amd64`, no `--privileged` needed)
     - Gets ECR password on host via `aws ecr get-login-password` (works with osxkeychain)
     - No volume mounts of large files — container pulls directly from ECR
   - **Linux:** Runs soci convert natively (auto-downloads latest if not installed), uses skopeo for push
   - **Other:** Exits with helpful error and manual instructions
-- Supports `--soci-only` flag to skip build/push steps and only recreate the SOCI index
+- Supports `--soci-only` flag to skip build/push steps and only recreate the SOCI index (flag must be parsed before positional args to avoid being consumed as ECR_REPO)
 - Always resolves the latest soci version from GitHub API (`/repos/awslabs/soci-snapshotter/releases/latest`)
 - Print next steps (run comparison)
 
@@ -186,8 +187,8 @@ If user provides existing role ARNs, use variables instead and skip iam.tf.
 - Takes optional args to override: `[CLUSTER_NAME] [REGION]`
 - Launches two tasks via `aws ecs run-task` (one with-soci task def, one without-soci task def)
 - Passes networking config (`awsvpcConfiguration`) using the subnet from tfvars, default VPC security group, and public IP setting
-- Waits for both tasks to reach STOPPED state via `aws ecs wait tasks-stopped`
-- Describes both tasks to get `pullStartedAt` and `pullStoppedAt` timestamps
+- **Does NOT use `aws ecs wait tasks-stopped`** — tasks run indefinitely (FastAPI server). Instead, polls `describe-tasks` for `pullStartedAt`/`pullStoppedAt` at the task level (not container level) until both are populated (max 300s timeout)
+- After collecting pull timing, stops both tasks via `aws ecs stop-task`
 - Calculates pull duration in seconds
 - Prints side-by-side comparison
 - Prints expected ranges (90–180s without SOCI, 15–40s with SOCI for ~6GB image)
@@ -228,7 +229,10 @@ Observed results for a ~4 GB compressed PyTorch image:
 - **Using SOCI on small images (<500MB)**: Overhead exceeds benefit. SOCI shines on multi-GB images.
 - **Using `soci create` + `soci push` (v1) instead of `soci convert --standalone` (v2)**: v1 requires containerd running, causes issues on macOS/Docker-in-Docker. Use `soci convert --standalone` which has no containerd dependency.
 - **Using `skopeo copy` without `--all`**: Drops the SOCI index manifest from the OCI image index. Must use `skopeo copy --all` to push both the image and SOCI index as sibling manifests.
+- **Pushing `soci convert` output without patching `index.json`**: `soci convert --standalone` does not add `org.opencontainers.image.ref.name` annotations to the output OCI index. Without patching, `skopeo copy --all oci:<dir>:<tag>` fails with "no descriptor found for reference". Use `jq` to add the tag annotation to `manifests[0]` before pushing.
 - **Using `docker save` for large images on macOS**: Can crash Docker Desktop due to memory pressure. Instead, use `skopeo copy` to pull from ECR directly as an OCI layout.
+- **Using `aws ecs wait tasks-stopped` for comparison**: Tasks run a long-lived server and won't stop on their own. Instead, poll `describe-tasks` for `pullStartedAt`/`pullStoppedAt` fields (task-level, not container-level), then explicitly stop tasks after collecting timing.
+- **Reading pull timing from `containers[0]`**: Pull timing fields (`pullStartedAt`/`pullStoppedAt`) are on the task object itself, not nested under `containers[0]`.
 - **Fargate platform version < 1.4.0**: SOCI requires 1.4.0+.
 - **Expecting SOCI to help with startup logic**: SOCI only reduces image PULL time. Model warm-up is unaffected.
 - **Using :latest tag**: Use explicit tags so you can control which tag has an index.
