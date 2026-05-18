@@ -32,7 +32,7 @@ Before generating anything, gather this information from the user:
 3. **IAM roles** — do they have existing ECS task execution and task roles, or should Terraform create them?
    - Task execution role needs: trust `ecs-tasks.amazonaws.com`, policy `AmazonECSTaskExecutionRolePolicy`
    - Task role needs: trust `ecs-tasks.amazonaws.com`, no extra policies for this demo
-4. **Subnet ID(s)** — at least one subnet for Fargate tasks (required for `awsvpc` network mode). Ask if they need `assignPublicIp = ENABLED` (public subnets without NAT).
+4. **Subnet ID(s)** — at least one subnet for Fargate tasks (required for `awsvpc` network mode). Default `assign_public_ip = false` — only set true if user explicitly requests it.
 5. **ECR** — should Terraform create the repo, or does one exist already?
 6. **Region** — default `us-east-1` unless they specify otherwise
 
