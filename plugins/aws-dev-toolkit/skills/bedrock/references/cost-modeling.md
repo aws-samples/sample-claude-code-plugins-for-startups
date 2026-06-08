@@ -7,7 +7,8 @@ Bedrock charges per token (input and output separately). Key variables:
 - **Output tokens**: Model's response. Control via max_tokens and prompt design.
 - **Cached input tokens**: Repeated system prompts cached by Bedrock — up to 90% cheaper for supported models.
 - **Batch inference**: 50% discount for async, non-real-time workloads.
-- **Provisioned throughput**: Committed capacity — only for high, sustained volume. Minimum commitment is 1 month.
+- **Provisioned throughput (PT)**: Committed capacity on the traditional Bedrock infrastructure — only for high, sustained volume. Minimum commitment is 1 month.
+- **Reserved Tier**: Committed capacity on the Mantle infrastructure — the equivalent capacity-reservation lever for models served there. PT and Reserved Tier are usually mutually exclusive per model (a model is on one infrastructure or the other), so pick by the target model's availability, not by preference. There is no official PT deprecation or ETA, only an unofficial directional move toward Mantle.
 
 ## Cost Modeling Template
 

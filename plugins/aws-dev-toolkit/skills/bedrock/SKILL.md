@@ -1,6 +1,6 @@
 ---
 name: bedrock
-description: Deep-dive into Amazon Bedrock — model selection, agents, knowledge bases, guardrails, prompt engineering, and cost modeling. This skill should be used when the user asks to "build with Bedrock", "select a Bedrock model", "design a Bedrock agent", "set up a knowledge base", "configure guardrails", "estimate Bedrock costs", "optimize Bedrock pricing", "use prompt caching", "compare Bedrock models", or mentions Amazon Bedrock, foundation models, RAG on AWS, or generative AI on AWS.
+description: Deep-dive into Amazon Bedrock — model selection, agents, knowledge bases, guardrails, prompt engineering, model customization (fine-tuning), and cost modeling. This skill should be used when the user asks to "build with Bedrock", "select a Bedrock model", "design a Bedrock agent", "set up a knowledge base", "configure guardrails", "estimate Bedrock costs", "optimize Bedrock pricing", "use prompt caching", "compare Bedrock models", "fine-tune a model", "customize a model", "distill a model", "import a custom model", or mentions Amazon Bedrock, foundation models, RAG on AWS, model customization, fine-tuning, distillation, or generative AI on AWS.
 ---
 
 Specialist guidance for Amazon Bedrock. Covers model selection, agent design, knowledge bases, guardrails, prompt engineering, batch inference, and cost optimization.
@@ -92,6 +92,14 @@ The model choice is the single biggest cost and quality decision. Get this right
 - Request JSON with explicit schemas to reduce output token waste
 - Use the Converse API with tool use for structured extraction — more reliable than asking for JSON in the prompt
 
+## Model Customization (Fine-Tuning)
+
+Fine-tuning is rarely the first move — rule out better prompting, RAG/Knowledge Bases, and prompt caching first. FT changes *behavior/style*, not *knowledge*; for facts, use RAG. Fine-tune only when the task is narrow, repeated at volume, has a stable target, and prompting has plateaued.
+
+When a customization task comes up — choosing a method (SFT, distillation, DPO, RFT, CPT), picking a fine-tuning target, the train→deploy→bill lifecycle, evaluation, or the many operational gotchas (region availability, console "deprecated model" errors, native FT vs Custom Model Import, Provisioned Throughput vs Reserved Tier (per-model availability, not a preference), `-1` loss fields, escrow-account artifact opacity) — **load `references/fine-tuning.md`**. It is the detailed, field-tested guide and the single source of truth for this topic.
+
+**Always verify against current docs first.** Customization is the fastest-moving surface in Bedrock — method × model support, fine-tunable base models, regions, and PT/reserved-tier availability all change frequently. Before committing to any customization design, confirm via the `awsknowledge` MCP tools (`mcp__plugin_aws-dev-toolkit_awsknowledge__aws___search_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___read_documentation`, `mcp__plugin_aws-dev-toolkit_awsknowledge__aws___recommend`).
+
 ## Batch Inference
 - 50% cheaper than on-demand for supported models
 - Use for: document processing, bulk classification, dataset enrichment, eval runs
@@ -146,8 +154,9 @@ aws bedrock get-model-invocation-logging-configuration
 
 ### Reference Files
 
-For detailed cost modeling and estimation, consult:
+For detailed guidance, consult:
 - **`references/cost-modeling.md`** — Pricing model breakdown, cost modeling template, optimization strategies, monitoring setup, and cost estimation output format
+- **`references/fine-tuning.md`** — Model customization: deciding whether to fine-tune, picking the method (SFT/distillation/DPO/RFT/CPT), choosing a target, the distillation pattern, operational gotchas, cost model, evaluation (fidelity vs accuracy), end-to-end API flow, and anti-patterns
 
 ### Related Skills
 - **`cost-check`** — Broader AWS cost analysis beyond Bedrock
