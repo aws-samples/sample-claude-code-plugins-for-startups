@@ -8,6 +8,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Trunk (linter — local cache/symlinks, do not track)
+.trunk/
+
 # Python (uvx/MCP servers)
 __pycache__/
 *.pyc
