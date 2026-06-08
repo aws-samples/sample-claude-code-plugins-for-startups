@@ -8,7 +8,7 @@ Bedrock charges per token (input and output separately). Key variables:
 - **Cached input tokens**: Repeated system prompts cached by Bedrock — up to 90% cheaper for supported models.
 - **Batch inference**: 50% discount for async, non-real-time workloads.
 - **Provisioned throughput (PT)**: Committed capacity on the traditional Bedrock infrastructure — only for high, sustained volume. Minimum commitment is 1 month.
-- **Reserved Tier**: Committed capacity on the Mantle infrastructure — the equivalent capacity-reservation lever for models served there. PT and Reserved Tier are usually mutually exclusive per model (a model is on one infrastructure or the other), so pick by the target model's availability, not by preference. There is no official PT deprecation or ETA, only an unofficial directional move toward Mantle.
+- **Reserved Tier**: Committed capacity on the Mantle infrastructure — the capacity-reservation lever for models served there, and the preferable option where a model offers it. PT and Reserved Tier are usually mutually exclusive per model (a model is on one infrastructure or the other), so lean toward Reserved Tier when available and fall back to PT when it isn't. Availability is per-model — confirm support for your target model in current AWS docs before modeling cost around it.
 
 ## Cost Modeling Template
 
