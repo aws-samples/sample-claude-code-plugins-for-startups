@@ -4,20 +4,53 @@
     "name": "aws-samples"
   },
   "metadata": {
-    "description": "A curated marketplace of Claude Code plugins for AWS development — skills, sub-agents, and MCP servers for building on AWS.",
-    "version": "0.3.0"
+    "description": "A curated marketplace of Claude Code plugins for AWS development \u2014 skills, sub-agents, and MCP servers for building on AWS.",
+    "version": "0.4.0"
   },
   "plugins": [
     {
       "name": "aws-dev-toolkit",
       "source": "./plugins/aws-dev-toolkit",
-      "description": "AWS development toolkit — 34 skills, 11 agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.",
+      "description": "AWS development toolkit \u2014 34 skills, 11 agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.",
       "version": "0.3.0",
       "author": {
         "name": "aws-samples"
       },
-      "keywords": ["aws", "iac", "cdk", "cloudformation", "terraform", "serverless", "well-architected", "migration", "gcp", "azure", "bedrock"],
+      "keywords": [
+        "aws",
+        "iac",
+        "cdk",
+        "cloudformation",
+        "terraform",
+        "serverless",
+        "well-architected",
+        "migration",
+        "gcp",
+        "azure",
+        "bedrock"
+      ],
       "category": "cloud-development"
+    },
+    {
+      "name": "fail-closed-security-hooks",
+      "source": "./plugins/fail-closed-security-hooks",
+      "description": "Fail-closed runtime guardrails \u2014 PII/secrets prompt guard (7 jurisdictions), git policy guard, tamper-evident HMAC-chained audit log (CloudWatch/SIEM dual-write), and a token-budget circuit breaker. For startups touching regulated data.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Tim Wu"
+      },
+      "keywords": [
+        "security",
+        "guardrails",
+        "compliance",
+        "pii",
+        "audit",
+        "fintech",
+        "healthcare",
+        "bedrock",
+        "devsecops"
+      ],
+      "category": "security"
     }
   ]
 }
