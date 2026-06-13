@@ -1,0 +1,65 @@
+{
+  "description": "Enterprise security controls for Claude Code on Amazon Bedrock: PII/secrets guard, git policy guard, tamper-evident HMAC-chained audit log, token-budget circuit breaker — all wrapped by a fail-closed telemetry shim. Opt-in defaults write to ~/.claude/claude-code-security; for un-removable enterprise enforcement deploy via managed-settings + IaC (see homepage).",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/pii-guard.sh\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/audit-logger.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/git-guard.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/pii-guard.sh\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/token-budget-guard.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/audit-logger.sh\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/hook-wrapper.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/token-budget-guard.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

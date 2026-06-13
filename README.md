@@ -241,6 +241,22 @@ Add to `~/.kiro/settings/mcp.json` (user-level) or `.kiro/settings/mcp.json` (wo
 | `awsknowledge` | http | `https://knowledge-mcp.global.api.aws` | AWS documentation search, service recommendations, and regional availability |
 | `awspricing` | stdio | `awslabs.aws-pricing-mcp-server` | AWS service pricing data, cost reports, and IaC cost analysis |
 
+### fail-closed-security-hooks
+
+Runtime guardrails on what the agent *does* — the layer a startup needs the moment it touches regulated data (fintech, health). Five hooks via a fail-closed telemetry shim: a PII/secrets prompt guard (credentials + national IDs across 7 jurisdictions), a git policy guard, a tamper-evident HMAC-chained audit log (optional CloudWatch/SIEM dual-write), and a per-session token-budget circuit breaker. A broken control fails *safe*, not open.
+
+```bash
+/plugin install fail-closed-security-hooks@aws-samples
+```
+
+Or load locally during development:
+
+```bash
+claude --plugin-dir ./plugins/fail-closed-security-hooks
+```
+
+See [plugins/fail-closed-security-hooks/README.md](plugins/fail-closed-security-hooks/README.md) for configuration and the audit-chain verifier.
+
 ## Prerequisites
 
 - [Claude Code](https://code.claude.com) v1.0.33+

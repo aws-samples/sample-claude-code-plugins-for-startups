@@ -1,0 +1,12 @@
+{
+  "name": "fail-closed-security-hooks",
+  "version": "1.0.0",
+  "description": "Fail-closed guardrails for what the agent does: PII/secrets prompt guard (US/UK/JP/KR/SG/EU/AU national IDs + credentials), git policy guard, tamper-evident HMAC-chained audit log with optional CloudWatch/SIEM dual-write, and a per-session token-budget circuit breaker — all wrapped by a telemetry shim that turns silent hook failures into explicit denials. For startups touching regulated data (fintech, health).",
+  "author": {
+    "name": "Tim Wu"
+  },
+  "homepage": "https://github.com/timwukp/claude-code-on-aws-bedrock-best-practices",
+  "repository": "https://github.com/timwukp/claude-code-on-aws-bedrock-best-practices",
+  "keywords": ["security", "guardrails", "compliance", "pii", "audit", "fintech", "healthcare", "aws-bedrock", "devsecops"],
+  "license": "MIT-0"
+}
