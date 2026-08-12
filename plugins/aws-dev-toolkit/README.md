@@ -1,4 +1,22 @@
-# aws-dev-toolkit
+# aws-dev-toolkit (DEPRECATED)
+
+> **This plugin is deprecated and no longer maintained.**
+
+For startup-specific guidance, install AWS Startup Advisor:
+
+```bash
+/plugin install aws-startup-advisor@claude-plugins-official
+```
+
+For general-purpose AWS guidance, use Agent Toolkit for AWS. Set it up in one command (requires AWS CLI 2.35+):
+
+```bash
+aws configure agent-toolkit
+```
+
+This AWS Dev Toolkit plugin will stop receiving updates and will be removed from the marketplace. Existing installs will continue to function during the transition but will not be updated. Install AWS Startup Advisor to receive startup guidance and skills for AWS.
+
+---
 
 A Claude Code plugin for building, migrating, and performing architecture reviews on AWS. Ships 34 skills, 11 sub-agents, and 3 MCP servers.
 

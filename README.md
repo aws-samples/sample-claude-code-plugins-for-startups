@@ -10,9 +10,17 @@ Add the marketplace once, then install any plugin from it.
 
 ## Plugins
 
-### aws-dev-toolkit
+### aws-dev-toolkit (DEPRECATED)
 
-A comprehensive AWS development toolkit — 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.
+> **This plugin is deprecated and no longer maintained.**
+>
+> For startup-specific guidance, install AWS Startup Advisor: `/plugin install aws-startup-advisor@claude-plugins-official`
+>
+> For general-purpose AWS guidance, use Agent Toolkit for AWS: `aws configure agent-toolkit` (requires AWS CLI 2.35+)
+>
+> This plugin will stop receiving updates and will be removed from the marketplace. Existing installs continue to function during the transition but will not be updated.
+
+A comprehensive AWS development toolkit with 34 skills, 11 sub-agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.
 
 ```bash
 /plugin install aws-dev-toolkit@aws-samples

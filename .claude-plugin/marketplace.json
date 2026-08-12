@@ -11,7 +11,7 @@
     {
       "name": "aws-dev-toolkit",
       "source": "./plugins/aws-dev-toolkit",
-      "description": "AWS development toolkit — 34 skills, 11 agents, and 3 MCP servers for building, migrating, and performing architecture reviews on AWS.",
+      "description": "[DEPRECATED] AWS Dev Toolkit is no longer maintained. Startup-specific guidance is available in AWS Startup Advisor; install aws-startup-advisor@claude-plugins-official. For general-purpose AWS guidance, use Agent Toolkit for AWS (aws configure agent-toolkit). This AWS Dev Toolkit plugin will stop receiving updates and will be removed from the marketplace. Existing installs continue to function during the transition; install AWS Startup Advisor to keep receiving startup guidance.",
       "version": "0.3.0",
       "author": {
         "name": "aws-samples"
