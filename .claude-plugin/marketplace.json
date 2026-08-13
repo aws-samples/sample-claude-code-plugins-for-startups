@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "A curated marketplace of Claude Code plugins for AWS development — skills, sub-agents, and MCP servers for building on AWS.",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
       "name": "aws-dev-toolkit",
       "source": "./plugins/aws-dev-toolkit",
       "description": "[DEPRECATED] AWS Dev Toolkit is no longer maintained. Startup-specific guidance is available in AWS Startup Advisor; install aws-startup-advisor@claude-plugins-official. For general-purpose AWS guidance, use Agent Toolkit for AWS (aws configure agent-toolkit). This AWS Dev Toolkit plugin will stop receiving updates and will be removed from the marketplace. Existing installs continue to function during the transition; install AWS Startup Advisor to keep receiving startup guidance.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "author": {
         "name": "aws-samples"
       },
